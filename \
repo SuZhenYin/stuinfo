@@ -12,6 +12,7 @@ int cgiMain()
 	char name[32] = "\0";
 	char age[16] = "\0";
 	char stuId[32] = "\0";
+	char dept[32] = "\0";
 	int status = 0;
 
 	status = cgiFormString("name",  name, 32);
@@ -32,6 +33,12 @@ int cgiMain()
 	if (status != cgiFormSuccess)
 	{
 		fprintf(cgiOut, "get stuId error!\n");
+		return 1;
+	}
+	status = cgiFormString("dept",  dept, 32);
+	if (status != cgiFormSuccess)
+	{
+		fprintf(cgiOut, "get dept error!\n");
 		return 1;
 	}
 
@@ -59,17 +66,29 @@ int cgiMain()
 	}
 
 
-	sprintf(sql, "update stu set name='%s', age= %d where id = %d ", name, atoi(age), atoi(stuId));
+
+	strcpy(sql, "create table stu(id int not null primary key, name varchar(20) not null, age int not null,dept varchar(20) not null)");
 	if ((ret = mysql_real_query(db, sql, strlen(sql) + 1)) != 0)
 	{
-		fprintf(cgiOut,"mysql_real_query fail:%s\n", mysql_error(db));
-		mysql_close(db);
-		return -1;
+		if (ret != 1)
+		{
+			fprintf(cgiOut,"mysql_real_query fail:%s\n", mysql_error(db));
+			mysql_close(db);
+			return -1;
+		}
 	}
 
 
 
-	fprintf(cgiOut, "update student ok!\n");
+	sprintf(sql, "insert into stu values(%d, '%s', %d,%d)", atoi(stuId), name, atoi(age),dept);
+	if (mysql_real_query(db, sql, strlen(sql) + 1) != 0)
+	{
+		fprintf(cgiOut, "%s\n", mysql_error(db));
+		mysql_close(db);
+		return -1;
+	}
+
+	fprintf(cgiOut, "add student ok!\n");
 	mysql_close(db);
 	return 0;
 }
