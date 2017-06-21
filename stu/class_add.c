@@ -11,8 +11,7 @@ int cgiMain()
 
 	char cno[32] = "\0";
 	char cname[16] = "\0";
-	char teach[32] = "\0";
-	char condition = "\0";
+	char teacher[32] = "\0";
 	int status = 0;
 
 	status = cgiFormString("cno", cno , 32);
@@ -29,7 +28,7 @@ int cgiMain()
 		return 1;
 	}
 
-	status = cgiFormString("teach",  teach, 32);
+	status = cgiFormString("teacher",  teacher, 32);
 	if (status != cgiFormSuccess)
 	{
 		fprintf(cgiOut, "get teach error!\n");
@@ -60,9 +59,9 @@ int cgiMain()
 		return -1;
 	}
 
+strcpy(sql, "create table class(cno int not null primary key, cname varchar(20) not null, teacher varchar(255) not null)");
 
 
-	strcpy(sql, "create table class(cno int not null primary key,  cname int not null,teach varchar(255) not null,condition varchar(2) not null default '1')");
 	if ((ret = mysql_real_query(db, sql, strlen(sql) + 1)) != 0)
 	{
 		if (ret != 1)
@@ -75,7 +74,7 @@ int cgiMain()
 
 
 
-	sprintf(sql, "insert into class values(%d, '%s', '%s')", atoi(cno), cname, teach);
+	sprintf(sql, "insert into class values(%d, '%s', '%s')", atoi(cno), cname, teacher);
 	if (mysql_real_query(db, sql, strlen(sql) + 1) != 0)
 	{
 		fprintf(cgiOut, "%s\n", mysql_error(db));

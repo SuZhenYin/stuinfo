@@ -5,28 +5,35 @@
 #include <mysql/mysql.h>
 #include "cgic.h"
 
+char * headname = "head.html";
+char * footname = "footer.html";
 
 int cgiMain()
 {
-
-	fprintf(cgiOut, "Content-type:text/html;charset=utf-8\n\n");
-/*	fprintf(cgiOut, "<head><meta charset=\"utf-8\"/><title>查询结果</title>\
-			<style>table {width:400px; margin: 50px auto; border: 1px solid gray; border-collapse: collapse; border-spacing: none; text-align:center;}\
-			tr,td,th{border: 1px solid gray;}\
-			</style>\
-			</head>");*/
-
-	fprintf(cgiOut, "<head><meta charset=\"utf-8\"><title>查询结果</title>\
-		    <link rel=\"stylesheet\" href=\"/stu/public/css/bootstrap.min.css\">\
-		</head>");
-
-	char name[32] = "\0";
+  char cno[32] = "\0";
 	int status = 0;
+  char ch;
+  FILE * fd;
+	fprintf(cgiOut, "Content-type:text/html;charset=utf-8\n\n");
+	if(!(fd = fopen(headname, "r"))){
+		fprintf(cgiOut, "Cannot open file, %s\n", headname);
+		return -1;
+	}
+	ch = fgetc(fd);
 
-	status = cgiFormString("name",  name, 32);
+	while(ch != EOF){
+		fprintf(cgiOut, "%c", ch);
+		ch = fgetc(fd);
+	}
+fclose(fd);
+
+fprintf(cgiOut, "<head><meta charset=\"utf-8\"><title>查询结果</title>\
+      <link rel=\"stylesheet\" href=\"/stu/public/css/bootstrap.min.css\">\
+  </head>");
+	status = cgiFormString("cno",  cno, 32);
 	if (status != cgiFormSuccess)
 	{
-		fprintf(cgiOut, "get name error!\n");
+		fprintf(cgiOut, "get cno error!\n");
 		return 1;
 	}
 
@@ -34,13 +41,13 @@ int cgiMain()
 	MYSQL *db;
 	char sql[128] = "\0";
 
-	if (name[0] == '*')
+	if (cno[0] == '*')
 	{
-		sprintf(sql, "select * from stu");
+		sprintf(sql, "select * from class ");
 	}
 	else
 	{
-		sprintf(sql, "select * from stu where name = '%s'", name);
+		sprintf(sql, "select * from class where cno = '%s'", cno);
 	}
 
 
