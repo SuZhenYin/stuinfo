@@ -42,7 +42,7 @@ int cgiMain()
 		return -1;
 	}
 
-	sprintf(sql, "delete from sc where cno = %d", atoi(cno));
+	sprintf(sql, "update sc set sc.flag=0 where cno = %d", atoi(cno));
 	if ((ret = mysql_real_query(db, sql, strlen(sql) + 1)) != 0)
 	{
 		fprintf(cgiOut,"mysql_real_query fail:%s\n", mysql_error(db));
@@ -50,7 +50,7 @@ int cgiMain()
 		return -1;
 	}
 
-	sprintf(sql, "delete from class where cno = %d", atoi(cno));
+	sprintf(sql, "update class set class.flag=0 where cno = %d", atoi(cno));
 	if ((ret = mysql_real_query(db, sql, strlen(sql) + 1)) != 0)
 	{
 		fprintf(cgiOut,"mysql_real_query fail:%s\n", mysql_error(db));

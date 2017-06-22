@@ -42,7 +42,7 @@ int cgiMain()
 		return -1;
 	}
 
-	sprintf(sql, "delete from sc where sno = %d", atoi(sno));
+	sprintf(sql, "update sc set flag=0 where sno = %d", atoi(sno));
 	if ((ret = mysql_real_query(db, sql, strlen(sql) + 1)) != 0)
 	{
 		fprintf(cgiOut,"mysql_real_query fail:%s\n", mysql_error(db));

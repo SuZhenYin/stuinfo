@@ -14,14 +14,14 @@ int cgiMain()
 	char score[32] = "\0";
 	int status = 0;
 
-	status = cgiFormString("cno", cno , 32);
+	status = cgiFormString("cno",  cno, 32);
 	if (status != cgiFormSuccess)
 	{
 		fprintf(cgiOut, "get cno error!\n");
 		return 1;
 	}
 
-	status = cgiFormString("sno",  sno, 16);
+	status = cgiFormString("sno",  sno, 32);
 	if (status != cgiFormSuccess)
 	{
 		fprintf(cgiOut, "get sno error!\n");
@@ -34,8 +34,6 @@ int cgiMain()
 		fprintf(cgiOut, "get score error!\n");
 		return 1;
 	}
-
-
 	//fprintf(cgiOut, "name = %s, age = %s, stuId = %s\n", name, age, stuId);
 
 	int ret;
@@ -59,15 +57,18 @@ int cgiMain()
 		return -1;
 	}
 
-	sprintf(sql, "insert into sc(sno,cno,score) values(%d, %d, '%s')", atoi(sno), atoi(cno), score);
-	if (mysql_real_query(db, sql, strlen(sql) + 1) != 0)
+
+	sprintf(sql, "update sc set score='%s' where sno = %d  and cno = %d ", score, atoi(sno),atoi(cno));
+	if ((ret = mysql_real_query(db, sql, strlen(sql) + 1)) != 0)
 	{
-		fprintf(cgiOut, "%s\n", mysql_error(db));
+		fprintf(cgiOut,"mysql_real_query fail:%s\n", mysql_error(db));
 		mysql_close(db);
 		return -1;
 	}
 
-	fprintf(cgiOut, "添加成功！ ok!\n");
+
+
+	fprintf(cgiOut, "update student ok!\n");
 	mysql_close(db);
 	return 0;
 }

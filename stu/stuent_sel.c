@@ -43,7 +43,8 @@ fprintf(cgiOut, "<head><meta charset=\"utf-8\"><title>查询结果</title>\
 
 	if (sno[0] == '*')
 	{
-		sprintf(sql, "select sno,sname,sage,dept from stu where flag=1");
+    fprintf(cgiOut, "get sno error!\n");
+		return 1;
 	}
 	else
 	{

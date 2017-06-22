@@ -74,7 +74,7 @@ strcpy(sql, "create table class(cno int not null primary key, cname varchar(20) 
 
 
 
-	sprintf(sql, "insert into class values(%d, '%s', '%s')", atoi(cno), cname, teacher);
+	sprintf(sql, "insert into class(cno,cname,teacher) values(%d, '%s', '%s')", atoi(cno), cname, teacher);
 	if (mysql_real_query(db, sql, strlen(sql) + 1) != 0)
 	{
 		fprintf(cgiOut, "%s\n", mysql_error(db));

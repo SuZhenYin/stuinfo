@@ -43,11 +43,11 @@ fprintf(cgiOut, "<head><meta charset=\"utf-8\"><title>查询结果</title>\
 
 	if (cno[0] == '*')
 	{
-		sprintf(sql, "select * from class ");
+		sprintf(sql, "select cno,cname,teacher from class where class.flag =1");
 	}
 	else
 	{
-		sprintf(sql, "select * from class where cno = '%s'", cno);
+		sprintf(sql, "select cno,cname,teacher from class where class.flag =1 and cno = '%s'", cno);
 	}
 
 

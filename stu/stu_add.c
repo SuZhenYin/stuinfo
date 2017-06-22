@@ -67,7 +67,6 @@ int cgiMain()
 		return -1;
 	}
 
-strcpy(sql, "create table stu(sno int not null primary key, sname varchar(20) not null, sage int not null,dept varchar(255) not null)");
 
 
 	if ((ret = mysql_real_query(db, sql, strlen(sql) + 1)) != 0)
@@ -84,7 +83,7 @@ strcpy(sql, "create table stu(sno int not null primary key, sname varchar(20) no
 
 
 
-	sprintf(sql, "insert into stu values(%d, '%s', %d,'%s')", atoi(sno), sname, atoi(sage),dept);
+	sprintf(sql, "insert into stu(sno,sname,sage,dept) values(%d, '%s', %d,'%s')", atoi(sno), sname, atoi(sage),dept);
 	if (mysql_real_query(db, sql, strlen(sql) + 1) != 0)
 	{
 
